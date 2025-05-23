@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>生成游戏音效</title>
+</head>
+<body>
+    <script>
+        // 创建音频上下文
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // 生成跳跃音效
+        function generateJumpSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(880, audioContext.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
+            
+            // 保存音效
+            setTimeout(() => {
+                const audioData = audioContext.createMediaStreamDestination();
+                gainNode.connect(audioData);
+                const mediaRecorder = new MediaRecorder(audioData.stream);
+                const chunks = [];
+                
+                mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'audio/mp3' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'jump.mp3';
+                    a.click();
+                };
+                
+                mediaRecorder.start();
+                setTimeout(() => mediaRecorder.stop(), 200);
+            }, 200);
+        }
+
+        // 生成碰撞音效
+        function generateHitSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(110, audioContext.currentTime + 0.2);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.2);
+            
+            // 保存音效
+            setTimeout(() => {
+                const audioData = audioContext.createMediaStreamDestination();
+                gainNode.connect(audioData);
+                const mediaRecorder = new MediaRecorder(audioData.stream);
+                const chunks = [];
+                
+                mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'audio/mp3' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'hit.mp3';
+                    a.click();
+                };
+                
+                mediaRecorder.start();
+                setTimeout(() => mediaRecorder.stop(), 300);
+            }, 300);
+        }
+
+        // 生成死亡音效
+        function generateDeathSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(110, audioContext.currentTime + 0.5);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.5);
+            
+            // 保存音效
+            setTimeout(() => {
+                const audioData = audioContext.createMediaStreamDestination();
+                gainNode.connect(audioData);
+                const mediaRecorder = new MediaRecorder(audioData.stream);
+                const chunks = [];
+                
+                mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'audio/mp3' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'death.mp3';
+                    a.click();
+                };
+                
+                mediaRecorder.start();
+                setTimeout(() => mediaRecorder.stop(), 600);
+            }, 600);
+        }
+
+        // 生成背景音乐
+        function generateBackgroundMusic() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 2);
+            
+            // 保存音效
+            setTimeout(() => {
+                const audioData = audioContext.createMediaStreamDestination();
+                gainNode.connect(audioData);
+                const mediaRecorder = new MediaRecorder(audioData.stream);
+                const chunks = [];
+                
+                mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'audio/mp3' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'background-music.mp3';
+                    a.click();
+                };
+                
+                mediaRecorder.start();
+                setTimeout(() => mediaRecorder.stop(), 2100);
+            }, 2100);
+        }
+
+        // 生成所有音效
+        setTimeout(() => {
+            generateJumpSound();
+            setTimeout(() => {
+                generateHitSound();
+                setTimeout(() => {
+                    generateDeathSound();
+                    setTimeout(() => {
+                        generateBackgroundMusic();
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }, 1000);
+    </script>
+</body>
+</html> 

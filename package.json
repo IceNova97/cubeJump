@@ -1,0 +1,12 @@
+{
+  "name": "endless-runner",
+  "version": "1.0.0",
+  "description": "一个简单的无限跑酷游戏",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -c-1"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

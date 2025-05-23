@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>生成游戏资源</title>
+</head>
+<body>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 生成玩家角色
+        function generatePlayer() {
+            canvas.width = 50;
+            canvas.height = 50;
+            ctx.fillStyle = '#3498db';
+            ctx.fillRect(10, 10, 30, 40);
+            ctx.fillStyle = '#2980b9';
+            ctx.fillRect(15, 5, 20, 10);
+            downloadCanvas('player.png');
+        }
+
+        // 生成地面
+        function generateGround() {
+            canvas.width = 800;
+            canvas.height = 40;
+            ctx.fillStyle = '#2ecc71';
+            ctx.fillRect(0, 0, 800, 40);
+            ctx.fillStyle = '#27ae60';
+            for(let i = 0; i < 800; i += 20) {
+                ctx.fillRect(i, 0, 10, 40);
+            }
+            downloadCanvas('ground.png');
+        }
+
+        // 生成障碍物
+        function generateObstacle() {
+            canvas.width = 30;
+            canvas.height = 50;
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillRect(0, 0, 30, 50);
+            ctx.fillStyle = '#c0392b';
+            ctx.fillRect(5, 5, 20, 40);
+            downloadCanvas('obstacle.png');
+        }
+
+        // 生成背景
+        function generateBackground() {
+            canvas.width = 800;
+            canvas.height = 600;
+            const gradient = ctx.createLinearGradient(0, 0, 0, 600);
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(1, '#E0F7FA');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 800, 600);
+            downloadCanvas('background.png');
+        }
+
+        // 生成云朵
+        function generateCloud() {
+            canvas.width = 100;
+            canvas.height = 60;
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(30, 30, 20, 0, Math.PI * 2);
+            ctx.arc(50, 30, 25, 0, Math.PI * 2);
+            ctx.arc(70, 30, 20, 0, Math.PI * 2);
+            ctx.fill();
+            downloadCanvas('cloud.png');
+        }
+
+        // 生成草地
+        function generateGrass() {
+            canvas.width = 40;
+            canvas.height = 40;
+            ctx.fillStyle = '#2ecc71';
+            ctx.fillRect(0, 20, 40, 20);
+            for(let i = 0; i < 40; i += 5) {
+                ctx.beginPath();
+                ctx.moveTo(i, 20);
+                ctx.lineTo(i + 5, 10);
+                ctx.strokeStyle = '#27ae60';
+                ctx.stroke();
+            }
+            downloadCanvas('grass.png');
+        }
+
+        // 生成心形
+        function generateHeart() {
+            canvas.width = 30;
+            canvas.height = 30;
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.moveTo(15, 25);
+            ctx.bezierCurveTo(15, 25, 0, 15, 0, 5);
+            ctx.bezierCurveTo(0, 0, 5, 0, 5, 5);
+            ctx.bezierCurveTo(5, 0, 10, 0, 10, 5);
+            ctx.bezierCurveTo(10, 0, 15, 0, 15, 5);
+            ctx.bezierCurveTo(15, 0, 20, 0, 20, 5);
+            ctx.bezierCurveTo(20, 0, 25, 0, 25, 5);
+            ctx.bezierCurveTo(25, 15, 15, 25, 15, 25);
+            ctx.fill();
+            downloadCanvas('heart.png');
+        }
+
+        // 下载Canvas内容为图片
+        function downloadCanvas(filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // 生成所有资源
+        generatePlayer();
+        generateGround();
+        generateObstacle();
+        generateBackground();
+        generateCloud();
+        generateGrass();
+        generateHeart();
+    </script>
+</body>
+</html> 
